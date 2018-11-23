@@ -1,0 +1,19 @@
+.app-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	header {
+		font-size: 2rem;
+		text-align: center;
+	}
+
+	.main-content {
+		flex-grow: 1;
+	}
+
+	.layout-ctr-dark {
+		background-color: #ddd;
+		padding: 1.5rem;
+	}
+}
