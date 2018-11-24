@@ -1,0 +1,17 @@
+.line-container {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #ddd;
+	padding: 1rem;
+
+	.line {
+		flex: 1;
+		border-bottom: 1px solid #ddd;
+		text-align: center;
+
+		& > span {
+			padding: 0.5rem;
+			font-size: 1.5rem;
+		}
+	}
+}
