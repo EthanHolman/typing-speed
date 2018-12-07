@@ -1,4 +1,7 @@
 <div class='word-prompter-container'>
+    <app-speed-statistics-preview [wordCount]='typedResults.length' [avgAccuracy]='avgAccuracy' [avgWpm]='avgWpm'></app-speed-statistics-preview>
+</div>
+<div class='word-prompter-container'>
 	<app-word-prompter [lines]='lines' [currentWordIndex]='currentWordIndex'></app-word-prompter>
 </div>
 <div class='word-prompter-container'>
