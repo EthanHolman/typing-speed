@@ -1,0 +1,6 @@
+<div class='word-prompter-container'>
+	<app-word-prompter [lines]='lines' [currentWordIndex]='currentWordIndex'></app-word-prompter>
+</div>
+<div class='word-prompter-container'>
+	<app-word-input (wordComplete)='wordTyped($event)'></app-word-input>
+</div>

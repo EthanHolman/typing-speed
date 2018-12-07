@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'app-word-input',
@@ -7,11 +7,13 @@ import { Component } from '@angular/core';
 })
 export class WordInputComponent {
     currentVal: string = '';
+    @Output() wordComplete = new EventEmitter<string>();
 
-    constructor() {}
+    constructor() { }
 
     onValueChange(newVal: string): void {
         if (newVal.charAt(newVal.length - 1) === ' ') {
+            this.wordComplete.emit(this.currentVal);
             this.currentVal = '';
         }
     }
