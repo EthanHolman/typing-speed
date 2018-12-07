@@ -1,19 +1,18 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-	selector: 'word-input',
-	templateUrl: './word-input.component.html',
-	styleUrls: ['./word-input.component.scss']
+    selector: 'app-word-input',
+    templateUrl: './word-input.component.html',
+    styleUrls: ['./word-input.component.scss']
 })
 export class WordInputComponent {
-	currentVal: string = '';
+    currentVal: string = '';
 
-	constructor() {}
+    constructor() {}
 
-	onValueChange(newVal: string): void {
-		if (newVal.charAt(newVal.length - 1) === ' ') {
-			
-			this.currentVal = '';
-		}
-	}
+    onValueChange(newVal: string): void {
+        if (newVal.charAt(newVal.length - 1) === ' ') {
+            this.currentVal = '';
+        }
+    }
 }
