@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { WordInputComponent } from './components/word-input/word-input.component';
 import { SpeedTestService } from './services/speed-test.service';
 import { SpeedTesterComponent } from './components/speed-tester/speed-tester.component';
+import { SpeedStatisticsPreviewComponent } from './components/speed-statistics-preview/speed-statistics-preview.component';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { SpeedTesterComponent } from './components/speed-tester/speed-tester.com
         SpeedTesterComponent,
         WordPrompterComponent,
         WordInputComponent,
+        SpeedStatisticsPreviewComponent
     ],
     providers: [
         SpeedTestService,
