@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SpeedStatisticsPreviewComponent {
     @Input() wordCount: number;
+    @Input() mistakeWordCount: number;
     @Input() avgWpm: number;
     @Input() avgAccuracy: number;
 }

@@ -9,13 +9,20 @@ import { TypedWord } from '../../models/typed-word';
 export class WordInputComponent {
     currentVal: string = '';
     @Output() wordComplete = new EventEmitter<TypedWord>();
+    @Output() letterTyped = new EventEmitter<void>();
     startedCounter = false;
     startTime: number;
     stopTime: number;
 
     constructor() { }
 
+    onType(): void {
+        this.letterTyped.emit();
+    }
+
     onValueChange(newVal: string): void {
+        this.onType();
+
         if (!this.startedCounter) {
             this.startTime = Date.now();
             this.startedCounter = true;
@@ -24,7 +31,7 @@ export class WordInputComponent {
         if (newVal.charAt(newVal.length - 1) === ' ') {
             this.stopTime = Date.now();
             this.wordComplete.emit({
-                word: this.currentVal,
+                word: this.currentVal.trim(),
                 duration: this.stopTime - this.startTime
             });
             this.startTime = Date.now();

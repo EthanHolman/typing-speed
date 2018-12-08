@@ -4,6 +4,7 @@ import { WordListService } from 'src/app/modules/core/services/word-list.service
 import { takeUntil, max } from 'rxjs/operators';
 import { TypedWord } from '../../models/typed-word';
 import { TypedWordResult } from '../../models/typed-word-result';
+import { SpeedTestService } from '../../services/speed-test.service';
 
 @Component({
     selector: 'app-speed-tester',
@@ -15,11 +16,17 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
     words: string[] = [];
     lines: any[] = [];
     currentWordIndex = 0;
-    typedResults: TypedWordResult[] = [];
+    wordsTyped: number = 0;
     avgWpm: number = 0;
     avgAccuracy: number = 0;
+    startTime: number = undefined;
+    numLettersTyped: number = 0;
+    numIncorrectLetters: number = 0;
+    numExpectedLetters: number = 0;
+    incorrectWordCount: number = 0;
 
-    constructor(private _wordListService: WordListService) {}
+    constructor(private _wordListService: WordListService,
+                private _speedTestService: SpeedTestService) {}
 
     ngOnInit(): void {
         this.loadWords();
@@ -38,13 +45,17 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
         return this.words[this.getRandomNumber(0, this.words.length - 1)];
     }
 
+    letterTyped(): void {
+        if (!this.startTime) { this.startTime = Date.now(); }
+    }
+
     wordTyped(word: TypedWord): void {
-        this.typedResults.push({
-            wpm: 60000 / word.duration,
-            accuracy: this.calculateAccuracy(this.getCurrentWord(), word.word),
-            actualWord: this.getCurrentWord(),
-            typedWord: word.word
-        });
+        const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word.word);
+        this.numLettersTyped += word.word.length;
+        this.numIncorrectLetters += incorrectLetters;
+        this.numExpectedLetters += this.getCurrentWord().length;
+        if (incorrectLetters > 0) { this.incorrectWordCount++; }
+        this.wordsTyped++;
 
         this.updateStats();
 
@@ -58,37 +69,30 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
     }
 
     updateStats(): void {
-        let wpmTotal = 0;
-        let accuracyTotal = 0;
-
-        this.typedResults.forEach(x => {
-            wpmTotal += x.wpm;
-            accuracyTotal += x.accuracy;
-        });
-
-        this.avgWpm = wpmTotal / this.typedResults.length;
-        this.avgAccuracy = accuracyTotal / this.typedResults.length;
+        const minElapsed = (Date.now() - this.startTime) / 60000;
+        this.avgWpm = ((this.numLettersTyped / 4.7) - this.incorrectWordCount) / minElapsed;
+        this.avgAccuracy = 100 - ((this.numIncorrectLetters / this.numExpectedLetters) * 100);
     }
 
-    private calculateAccuracy(word: string, typedWord: string): number {
-        let numCorrect = 0;
-        for (let i = 0; i < typedWord.length; i++) {
-            if (word.length > i) {
-                if (word.charAt(i) === typedWord.charAt(i)) { numCorrect++; }
-            }
+    private calcIncorrectLetters(word: string, typedWord: string): number {
+        let incorrectCount = 0;
+        if (typedWord.length > word.length) { incorrectCount += (typedWord.length - word.length); }
+
+        for (let i = 0; i < Math.min(typedWord.length, word.length); i++) {
+            if (word.charAt(i) !== typedWord.charAt(i)) { incorrectCount++; }
         }
 
-        return numCorrect / Math.max(word.length, typedWord.length);
+        return incorrectCount;
     }
 
-    private getRandomNumber(min, max): number {
+    private getRandomNumber(min: number, max: number): number {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1));
     }
 
     private loadWords(): void {
-        this._wordListService.getWordList('100mostcommon.txt')
+        this._wordListService.getWordList('300mostcommon.txt')
             .pipe(takeUntil(this._unsubscribe))
             .subscribe((data: any) => {
                 this.words = data;

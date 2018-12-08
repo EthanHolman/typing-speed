@@ -1,5 +1,6 @@
 <div class='statistics-container'>
     <div>Words: {{ wordCount | number }}</div>
+    <div>Mistakes: {{ mistakeWordCount | number }}</div>
     <div>WPM: {{ avgWpm }}</div>
-    <div>Accuracy: {{ avgAccuracy }}</div>
+    <div>Accuracy: {{ avgAccuracy | number }}</div>
 </div>
