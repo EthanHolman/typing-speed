@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WordListService } from 'src/app/modules/core/services/word-list.service';
 import { takeUntil, max } from 'rxjs/operators';
-import { TypedWord } from '../../models/typed-word';
-import { TypedWordResult } from '../../models/typed-word-result';
+import { TypedWord } from '../../models/typed-word';e
 import { SpeedTestService } from '../../services/speed-test.service';
 
 @Component({
@@ -47,6 +46,7 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
 
     letterTyped(): void {
         if (!this.startTime) { this.startTime = Date.now(); }
+        this.updateStats();
     }
 
     wordTyped(word: TypedWord): void {
@@ -56,8 +56,6 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
         this.numExpectedLetters += this.getCurrentWord().length;
         if (incorrectLetters > 0) { this.incorrectWordCount++; }
         this.wordsTyped++;
-
-        this.updateStats();
 
         if (this.currentWordIndex === this.lines[0].length - 1) {
             this.lines.splice(0, 1);
