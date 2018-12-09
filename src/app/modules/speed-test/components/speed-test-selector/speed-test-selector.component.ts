@@ -26,4 +26,9 @@ export class SpeedTestSelectorComponent {
     get selectedSpeedTestId(): number { return this._speedTestService.selectedSpeedTestId; }
 
     constructor(private _speedTestService: SpeedTestService) { }
+
+    changeTest(testId: number): void {
+        this._speedTestService.selectedSpeedTestId = testId;
+        this._speedTestService.reset();
+    }
 }

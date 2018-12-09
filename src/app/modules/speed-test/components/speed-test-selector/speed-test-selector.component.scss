@@ -6,7 +6,8 @@
     .test-item {
         border: 1px solid #ddd;
         padding: 0.5rem;
-        
+        cursor: pointer;
+        margin-bottom: 0.5rem;
     }
 
     .test-item.selected {

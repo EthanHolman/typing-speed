@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { WordListApiService } from 'src/app/modules/core/services/word-list-api.service';
-import { takeUntil, max } from 'rxjs/operators';
 import { TypedWord } from '../../models/typed-word';
 import { SpeedTestService } from '../../services/speed-test.service';
 
@@ -12,9 +10,8 @@ import { SpeedTestService } from '../../services/speed-test.service';
 })
 export class SpeedTesterComponent implements OnInit, OnDestroy {
     private _unsubscribe = new Subject<void>();
-    words: string[] = [];
-    lines: any[] = [];
     currentWordIndex = 0;
+    get lines() { return this._speedTestService.lines; }
     wordsTyped: number = 0;
     avgWpm: number = 0;
     avgAccuracy: number = 0;
@@ -24,11 +21,10 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
     numExpectedLetters: number = 0;
     incorrectWordCount: number = 0;
 
-    constructor(private _WordListApiService: WordListApiService,
-                private _speedTestService: SpeedTestService) {}
+    constructor(private _speedTestService: SpeedTestService) { }
 
     ngOnInit(): void {
-        this.loadWords();
+        this._speedTestService.reset();
     }
 
     ngOnDestroy(): void {
@@ -36,17 +32,13 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
         this._unsubscribe.complete();
     }
 
-    getCurrentWord(): string {
-        return this.lines[0][this.currentWordIndex];
-    }
-
-    getNextWord(): string {
-        return this.words[this.getRandomNumber(0, this.words.length - 1)];
-    }
-
     letterTyped(): void {
         if (!this.startTime) { this.startTime = Date.now(); }
         this.updateStats();
+    }
+
+    getCurrentWord(): string {
+        return this.lines[0][this.currentWordIndex];
     }
 
     wordTyped(word: TypedWord): void {
@@ -57,9 +49,8 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
         if (incorrectLetters > 0) { this.incorrectWordCount++; }
         this.wordsTyped++;
 
-        if (this.currentWordIndex === this.lines[0].length - 1) {
-            this.lines.splice(0, 1);
-            this.lines.push(this.getRandomWords());
+        if (this.currentWordIndex === this._speedTestService.lines[0].length - 1) {
+            this._speedTestService.onLineCompleted();
             this.currentWordIndex = 0;
         } else {
             this.currentWordIndex++;
@@ -81,43 +72,5 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
         }
 
         return incorrectCount;
-    }
-
-    private getRandomNumber(min: number, max: number): number {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1));
-    }
-
-    private loadWords(): void {
-        this._WordListApiService.getWordList('300mostcommon.txt')
-            .pipe(takeUntil(this._unsubscribe))
-            .subscribe((data: any) => {
-                this.words = data;
-                this.onWordsLoaded();
-            }, (error: any) => {
-                this.words = [];
-                console.error(error);
-            });
-    }
-
-    private getRandomWords(): string[] {
-        let wordLength = 0;
-        const words: string[] = [];
-
-        while (wordLength < 25) {
-            const word = this.getNextWord();
-            words.push(word);
-            wordLength += word.length;
-        }
-
-        return words;
-    }
-
-    private onWordsLoaded(): void {
-        // Initial words loadup
-        for (let i = 0; i < 3; i++) {
-            this.lines.push(this.getRandomWords());
-        }
     }
 }
