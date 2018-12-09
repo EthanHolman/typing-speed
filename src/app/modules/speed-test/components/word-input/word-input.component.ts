@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { TypedWord } from '../../models/typed-word';
+import { Component } from '@angular/core';
+import { SpeedTestService } from '../../services/speed-test.service';
 
 @Component({
     selector: 'app-word-input',
@@ -8,16 +8,14 @@ import { TypedWord } from '../../models/typed-word';
 })
 export class WordInputComponent {
     currentVal: string = '';
-    @Output() wordComplete = new EventEmitter<TypedWord>();
-    @Output() letterTyped = new EventEmitter<void>();
     startedCounter = false;
     startTime: number;
     stopTime: number;
 
-    constructor() { }
+    constructor(private _speedTestService: SpeedTestService) { }
 
     onType(): void {
-        this.letterTyped.emit();
+        this._speedTestService.letterTyped();
     }
 
     onValueChange(newVal: string): void {
@@ -30,7 +28,7 @@ export class WordInputComponent {
 
         if (newVal.charAt(newVal.length - 1) === ' ') {
             this.stopTime = Date.now();
-            this.wordComplete.emit({
+            this._speedTestService.wordTyped({
                 word: this.currentVal.trim(),
                 duration: this.stopTime - this.startTime
             });

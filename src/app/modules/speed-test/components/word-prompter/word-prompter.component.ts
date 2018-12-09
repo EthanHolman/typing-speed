@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { SpeedTestService } from '../../services/speed-test.service';
 
 @Component({
     selector: 'app-word-prompter',
@@ -6,10 +7,11 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['word-prompter.component.scss']
 })
 export class WordPrompterComponent {
-    @Input() lines: any[];
-    @Input() currentWordIndex: number;
+    get lines(): any[] { return this._speedTestService.lines; }
 
-    isCurrentWord(val: string): boolean {
-        return val === this.lines[0][this.currentWordIndex];
+    constructor(private _speedTestService: SpeedTestService) { }
+
+    isCurrentWord(lineIndex, wordIndex): boolean {
+        return lineIndex === 0 && wordIndex === this._speedTestService.currentWordIndex;
     }
 }
