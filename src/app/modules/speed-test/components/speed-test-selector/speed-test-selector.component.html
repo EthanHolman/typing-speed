@@ -1,0 +1,6 @@
+<div class='test-list-container'>
+    <div *ngFor='let test of tests' [class.selected]='selectedSpeedTestId === test.id' class='test-item'>
+        <h4>{{ test.name }}</h4>
+        <div class='test-description'>{{ test.description }}</div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+.speed-test-container {
+    display: flex;
+    height: 100%;
+
+    .test-selector-container {
+        flex: 1;
+    }
+
+    .content-container {
+        flex: 3;
+    }
+}

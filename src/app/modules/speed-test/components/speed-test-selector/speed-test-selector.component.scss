@@ -1,0 +1,15 @@
+.test-list-container {
+    background-color: #eee;
+    padding: 0.5rem;
+    height: 100%;
+
+    .test-item {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        
+    }
+
+    .test-item.selected {
+        background-color: white;
+    }
+}

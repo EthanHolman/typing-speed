@@ -8,6 +8,7 @@ import { WordInputComponent } from './components/word-input/word-input.component
 import { SpeedTestService } from './services/speed-test.service';
 import { SpeedTesterComponent } from './components/speed-tester/speed-tester.component';
 import { SpeedStatisticsPreviewComponent } from './components/speed-statistics-preview/speed-statistics-preview.component';
+import { SpeedTestSelectorComponent } from './components/speed-test-selector/speed-test-selector.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { SpeedStatisticsPreviewComponent } from './components/speed-statistics-p
         SpeedTesterComponent,
         WordPrompterComponent,
         WordInputComponent,
-        SpeedStatisticsPreviewComponent
+        SpeedStatisticsPreviewComponent,
+        SpeedTestSelectorComponent
     ],
     providers: [
         SpeedTestService,

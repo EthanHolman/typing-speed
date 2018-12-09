@@ -3,5 +3,7 @@ import { WordLoaderService } from '../../core/services/word-loader.service';
 
 @Injectable()
 export class SpeedTestService {
-    constructor(private _wordLoader: WordLoaderService) { }
+    selectedSpeedTestId: number = 1;
+
+    // constructor(private _wordLoader: WordLoaderService) { }
 }
