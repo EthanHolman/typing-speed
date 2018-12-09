@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class WordListService {
+export class WordListApiService {
     constructor(private _http: HttpClient) {}
     getWordLists(): Observable<string[]> {
         return of([

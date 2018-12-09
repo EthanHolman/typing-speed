@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { WordListService } from 'src/app/modules/core/services/word-list.service';
+import { WordListApiService } from 'src/app/modules/core/services/word-list-api.service';
 import { takeUntil, max } from 'rxjs/operators';
-import { TypedWord } from '../../models/typed-word';e
+import { TypedWord } from '../../models/typed-word';
 import { SpeedTestService } from '../../services/speed-test.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
     numExpectedLetters: number = 0;
     incorrectWordCount: number = 0;
 
-    constructor(private _wordListService: WordListService,
+    constructor(private _WordListApiService: WordListApiService,
                 private _speedTestService: SpeedTestService) {}
 
     ngOnInit(): void {
@@ -90,7 +90,7 @@ export class SpeedTesterComponent implements OnInit, OnDestroy {
     }
 
     private loadWords(): void {
-        this._wordListService.getWordList('300mostcommon.txt')
+        this._WordListApiService.getWordList('300mostcommon.txt')
             .pipe(takeUntil(this._unsubscribe))
             .subscribe((data: any) => {
                 this.words = data;
