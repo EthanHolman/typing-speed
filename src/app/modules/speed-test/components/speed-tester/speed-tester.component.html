@@ -1,5 +1,5 @@
 <div class='speed-tester-container'>
-    <app-speed-statistics-preview [wordCount]='wordsTyped' [mistakeWordCount]='incorrectWordCount' [avgAccuracy]='avgAccuracy' [avgWpm]='avgWpm'></app-speed-statistics-preview>
-	<app-word-prompter [lines]='lines' [currentWordIndex]='currentWordIndex'></app-word-prompter>
-	<app-word-input (wordComplete)='wordTyped($event)' (letterTyped)='letterTyped()'></app-word-input>
+    <app-speed-statistics-preview></app-speed-statistics-preview>
+	<app-word-prompter></app-word-prompter>
+	<app-word-input></app-word-input>
 </div>

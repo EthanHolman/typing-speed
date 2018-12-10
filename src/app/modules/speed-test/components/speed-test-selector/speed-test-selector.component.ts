@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SpeedTestService } from '../../services/speed-test.service';
-import { TypingTestMode } from '../../models/typing-test-mode';
+import { TypingTestMode } from 'src/app/modules/core/models/typing-test-mode';
 
 @Component({
     selector: 'app-speed-test-selector',
@@ -8,27 +8,12 @@ import { TypingTestMode } from '../../models/typing-test-mode';
     styleUrls: ['./speed-test-selector.component.scss']
 })
 export class SpeedTestSelectorComponent {
-    tests: TypingTestMode[] = [
-        {
-            id: 1,
-            name: 'Easy',
-            description: 'Top 100 common English words',
-            textFileName: '100mostcommon.txt'
-        },
-        {
-            id: 2,
-            name: 'Normal',
-            description: 'Top 300 common English words',
-            textFileName: '300mostcommon.txt'
-        }
-    ];
-
     get selectedSpeedTestId(): number { return this._speedTestService.selectedSpeedTestId; }
+    get tests(): TypingTestMode[] { return this._speedTestService.typingTests; }
 
     constructor(private _speedTestService: SpeedTestService) { }
 
     changeTest(testId: number): void {
-        this._speedTestService.selectedSpeedTestId = testId;
-        this._speedTestService.reset();
+        this._speedTestService.loadTest(testId);
     }
 }

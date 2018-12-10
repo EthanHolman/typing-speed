@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { SpeedTestService } from '../../services/speed-test.service';
+import { TypingStats } from '../../models/typing-stats';
 
 @Component({
     selector: 'app-speed-statistics-preview',
@@ -6,8 +8,7 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./speed-statistics-preview.component.scss']
 })
 export class SpeedStatisticsPreviewComponent {
-    @Input() wordCount: number;
-    @Input() mistakeWordCount: number;
-    @Input() avgWpm: number;
-    @Input() avgAccuracy: number;
+    get typingStats(): TypingStats { return this._speedTestService.typingStats; }
+
+    constructor(private _speedTestService: SpeedTestService) { }
 }

@@ -1,5 +1,5 @@
 <div class='line-container'>
-	<div *ngFor='let line of lines; let xIndex = index' class='line'>
-		<span *ngFor='let word of line; let yIndex = index' [class.current-word]='yIndex === currentWordIndex && xIndex == 0'>{{ word }}</span>
+	<div *ngFor='let line of lines; let lineIndex = index' class='line'>
+		<span *ngFor='let word of line; let wordIndex = index' [class.current-word]='isCurrentWord(lineIndex, wordIndex)'>{{ word }}</span>
 	</div>
 </div>
