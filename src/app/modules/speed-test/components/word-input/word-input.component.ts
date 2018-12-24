@@ -8,8 +8,13 @@ import { SpeedTestService } from '../../services/speed-test.service';
 })
 export class WordInputComponent {
     currentVal: string = '';
+    get isTimerRunning(): boolean { return this._speedTestService.timer.isTimerRunning(); }
 
     constructor(private _speedTestService: SpeedTestService) { }
+
+    placeholder(): string {
+        return (this.isTimerRunning) ? '' : 'Begin Typing...';
+    }
 
     onType(): void {
         this._speedTestService.letterTyped();
