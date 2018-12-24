@@ -4,7 +4,6 @@ import { WordListApiService } from '../../core/services/word-list-api.service';
 import { TypingTestApiService } from '../../core/services/typing-test-api.service';
 import { TypingTestMode } from '../../core/models/typing-test-mode';
 import { TypingStats } from '../models/typing-stats';
-import { TypedWord } from '../models/typed-word';
 import { Timer } from '../../shared/utilities/timer';
 import { Subject } from 'rxjs';
 
@@ -34,9 +33,9 @@ export class SpeedTestService {
         this.loadWords();
     }
 
-    wordTyped(word: TypedWord): void {
-        const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word.word);
-        this.typingStats.numLettersTyped += word.word.length;
+    wordTyped(word: string): void {
+        const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word);
+        this.typingStats.numLettersTyped += word.length;
         this.typingStats.numIncorrectLetters += incorrectLetters;
         this.typingStats.numExpectedLetters += this.getCurrentWord().length;
         if (incorrectLetters > 0) { this.typingStats.incorrectWordCount++; }

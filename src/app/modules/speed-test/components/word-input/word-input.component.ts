@@ -8,9 +8,6 @@ import { SpeedTestService } from '../../services/speed-test.service';
 })
 export class WordInputComponent {
     currentVal: string = '';
-    startedCounter = false;
-    startTime: number;
-    stopTime: number;
 
     constructor(private _speedTestService: SpeedTestService) { }
 
@@ -21,18 +18,8 @@ export class WordInputComponent {
     onValueChange(newVal: string): void {
         this.onType();
 
-        if (!this.startedCounter) {
-            this.startTime = Date.now();
-            this.startedCounter = true;
-        }
-
         if (newVal.charAt(newVal.length - 1) === ' ') {
-            this.stopTime = Date.now();
-            this._speedTestService.wordTyped({
-                word: this.currentVal.trim(),
-                duration: this.stopTime - this.startTime
-            });
-            this.startTime = Date.now();
+            this._speedTestService.wordTyped(this.currentVal.trim());
             this.currentVal = '';
         }
     }
