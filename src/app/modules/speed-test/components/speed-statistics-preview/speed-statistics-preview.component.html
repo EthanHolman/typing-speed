@@ -1,7 +1,22 @@
 <div class='statistics-container'>
-    <div>Words: {{ typingStats.wordsTyped | number }}</div>
-    <div>Mistakes: {{ typingStats.incorrectWordCount | number }}</div>
-    <div>WPM: {{ typingStats.avgWpm | number:'1.1-1' }}</div>
-    <div>Accuracy: {{ typingStats.avgAccuracy | number:'1.0-0' }}</div>
-    <div>Time: {{ time }}</div>
+    <div class='stat-card'>
+        <div>Time</div>
+        <div>{{ time }}</div>
+    </div>
+    <div class='stat-card'>
+        <div>WPM</div>
+        <div>{{ typingStats.avgWpm | number:'1.1-1' }}</div>
+    </div>
+    <div class='stat-card'>
+        <div>Words</div>
+        <div>{{ typingStats.wordsTyped | number }}</div>
+    </div>
+    <div class='stat-card'>
+        <div>Mistakes</div>
+        <div>{{ typingStats.incorrectWordCount | number }}</div>
+    </div>
+    <div class='stat-card'>
+        <div>Accuracy</div>
+        <div>{{ typingStats.avgAccuracy | number:'1.0-0' }}%</div>
+    </div>
 </div>

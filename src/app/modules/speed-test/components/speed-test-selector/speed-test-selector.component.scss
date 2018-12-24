@@ -1,13 +1,17 @@
 .test-list-container {
     background-color: #eee;
-    padding: 0.5rem;
+    padding: 1rem;
     height: 100%;
 
     .test-item {
-        border: 1px solid #ddd;
-        padding: 0.5rem;
+        border: 1px solid #ccc;
+        padding: 1rem;
         cursor: pointer;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
+
+        h3 {
+            margin-bottom: 0.5rem;
+        }
     }
 
     .test-item.selected {

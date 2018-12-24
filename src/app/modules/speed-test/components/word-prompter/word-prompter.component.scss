@@ -8,9 +8,17 @@
 		flex: 1;
 		border-bottom: 1px solid #ddd;
 		text-align: center;
+		padding: 0.25rem 0;
 
-		& > span {
-			padding: 0.5rem;
+		&:first-of-type { padding-top: 0; }
+		&:last-of-type {
+			padding-bottom: 0;
+			border-bottom: none;
+		}
+
+		& > div {
+			display: inline-block;
+			padding: 0.15rem 0.5rem;
 			font-size: 1.5rem;
 		}
 

@@ -1,8 +1,8 @@
 <div class='speed-tester-container'>
-    <app-speed-statistics-preview></app-speed-statistics-preview>
+    <app-speed-statistics-preview class='tester-component'></app-speed-statistics-preview>
 	<ng-container *ngIf='!testComplete'>
-		<app-word-prompter></app-word-prompter>
-		<app-word-input></app-word-input>
+		<app-word-prompter class='tester-component'></app-word-prompter>
+		<app-word-input class='tester-component'></app-word-input>
 	</ng-container>
 	<ng-container *ngIf='testComplete'>
 		<div>Test Complete!</div>

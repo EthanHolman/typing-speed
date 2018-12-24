@@ -1,8 +1,20 @@
 .statistics-container {
     display: flex;
 
-    & > div {
+    .stat-card {
+        margin: 0 .5rem;
+        background-color: #ddd;
         flex: 1;
         text-align: center;
+        padding: .5rem;
+
+        &:first-of-type { margin-left: 0; }
+        &:last-of-type { margin-right: 0; }
+
+        & > div:last-of-type {
+            font-size: 1.5rem;
+        }
     }
+
+    
 }

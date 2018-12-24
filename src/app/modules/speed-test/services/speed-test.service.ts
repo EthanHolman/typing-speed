@@ -34,6 +34,7 @@ export class SpeedTestService {
     }
 
     wordTyped(word: string): void {
+        if (word.length === 0) return;
         const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word);
         this.typingStats.numLettersTyped += word.length;
         this.typingStats.numIncorrectLetters += incorrectLetters;
@@ -72,7 +73,7 @@ export class SpeedTestService {
         let wordLength = 0;
         const words: string[] = [];
 
-        while (wordLength < 25) {
+        while (wordLength < 35) {
             const word = this.getNextWord();
             words.push(word);
             wordLength += word.length;

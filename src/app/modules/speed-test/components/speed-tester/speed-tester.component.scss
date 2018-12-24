@@ -1,4 +1,13 @@
-.speed-tester-container {
-    max-width: 600px;
+:host {
 	margin: auto;
+}
+
+.speed-tester-container {
+	width: 725px;
+	margin: auto;
+
+	.tester-component {
+		display: block;
+		margin-bottom: 1rem;
+	}
 }
