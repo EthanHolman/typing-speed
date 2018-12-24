@@ -15,6 +15,7 @@ export class SpeedTestService {
     words: string[] = [];
     lines: any[] = [];
     currentWordIndex = 0;
+    currentTypedVal = '';
     typingStats: TypingStats = new TypingStats();
     timer: Timer = new Timer(60, 1000);
 
@@ -28,6 +29,7 @@ export class SpeedTestService {
         this.currentWordIndex = 0;
         this.words = [];
         this.lines = [];
+        this.currentTypedVal = '';
         this.typingStats = new TypingStats();
         this.timer.reset();
         this.loadWords();
@@ -50,8 +52,9 @@ export class SpeedTestService {
         }
     }
 
-    letterTyped(): void {
+    letterTyped(currentVal: string): void {
         if (!this.timer.isTimerRunning() && !this.timer.isComplete) { this.timer.start(); }
+        this.currentTypedVal = currentVal;
         this.updateStats();
     }
 

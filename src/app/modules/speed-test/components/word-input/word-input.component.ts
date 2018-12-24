@@ -17,15 +17,15 @@ export class WordInputComponent {
     }
 
     onType(): void {
-        this._speedTestService.letterTyped();
+        this._speedTestService.letterTyped(this.currentVal.trim());
     }
 
     onValueChange(newVal: string): void {
-        this.onType();
-
         if (newVal.charAt(newVal.length - 1) === ' ') {
             this._speedTestService.wordTyped(this.currentVal.trim());
             this.currentVal = '';
         }
+
+        this.onType();
     }
 }
