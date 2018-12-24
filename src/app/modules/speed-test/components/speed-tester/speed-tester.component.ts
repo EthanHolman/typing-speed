@@ -7,6 +7,8 @@ import { SpeedTestService } from '../../services/speed-test.service';
     styleUrls: ['./speed-tester.component.scss']
 })
 export class SpeedTesterComponent implements OnInit {
+    get testComplete(): boolean { return this._speedTestService.timer.isComplete; }
+
     constructor(private _speedTestService: SpeedTestService) { }
 
     ngOnInit(): void {

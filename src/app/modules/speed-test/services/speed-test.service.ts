@@ -5,16 +5,19 @@ import { TypingTestApiService } from '../../core/services/typing-test-api.servic
 import { TypingTestMode } from '../../core/models/typing-test-mode';
 import { TypingStats } from '../models/typing-stats';
 import { TypedWord } from '../models/typed-word';
+import { Timer } from '../../shared/utilities/timer';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class SpeedTestService {
+    private _subscriptions = new Subject<void>();
     typingTests: TypingTestMode[] = [];
-    selectedSpeedTestId: number = 1;
+    selectedSpeedTestId: number = 2;
     words: string[] = [];
     lines: any[] = [];
     currentWordIndex = 0;
     typingStats: TypingStats = new TypingStats();
-    startTime: number = undefined;
+    timer: Timer = new Timer(60, 1000);
 
     constructor(private _wordLoader: WordLoaderService,
                 private _wordListApiService: WordListApiService,
@@ -23,10 +26,11 @@ export class SpeedTestService {
     }
 
     reset(): void {
+        this.currentWordIndex = 0;
         this.words = [];
         this.lines = [];
-        this.startTime = undefined;
         this.typingStats = new TypingStats();
+        this.timer.reset();
         this.loadWords();
     }
 
@@ -47,7 +51,7 @@ export class SpeedTestService {
     }
 
     letterTyped(): void {
-        if (!this.startTime) { this.startTime = Date.now(); }
+        if (!this.timer.isTimerRunning() && !this.timer.isComplete) { this.timer.start(); }
         this.updateStats();
     }
 
@@ -56,7 +60,7 @@ export class SpeedTestService {
     }
 
     updateStats(): void {
-        const minElapsed = (Date.now() - this.startTime) / 60000;
+        const minElapsed = (this.timer.duration - this.timer.counter) / 60;
         this.typingStats.avgWpm = ((this.typingStats.numLettersTyped / 4.7) - this.typingStats.incorrectWordCount) / minElapsed;
         this.typingStats.avgAccuracy = 100 - ((this.typingStats.numIncorrectLetters / this.typingStats.numExpectedLetters) * 100);
     }
@@ -116,7 +120,9 @@ export class SpeedTestService {
     }
 
     private loadWords(): void {
-        const textFileName = this.typingTests.find(x => x.id === this.selectedSpeedTestId).textFileName;
+        const currentTypingTest = this.typingTests.find(x => x.id === this.selectedSpeedTestId);
+        const textFileName = currentTypingTest.textFileName;
+        this.timer.reset(currentTypingTest.timeLimit);
 
         this._wordListApiService.getWordList(textFileName)
             .subscribe((data: any) => {
