@@ -8,7 +8,7 @@ import { TypingTestMode } from 'src/app/modules/core/models/typing-test-mode';
     styleUrls: ['./speed-test-selector.component.scss']
 })
 export class SpeedTestSelectorComponent {
-    get selectedSpeedTestId(): number { return this._speedTestService.selectedSpeedTestId; }
+    get selectedSpeedTest(): TypingTestMode { return this._speedTestService.selectedTest; }
     get tests(): TypingTestMode[] { return this._speedTestService.typingTests; }
 
     constructor(private _speedTestService: SpeedTestService) { }

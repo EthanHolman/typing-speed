@@ -6,12 +6,14 @@ import { TypingTestMode } from '../../core/models/typing-test-mode';
 import { TypingStats } from '../models/typing-stats';
 import { Timer } from '../../shared/utilities/timer';
 import { Subject } from 'rxjs';
+import { WordMode } from '../../core/enums/word-mode.enum';
 
 @Injectable()
 export class SpeedTestService {
     private _subscriptions = new Subject<void>();
     typingTests: TypingTestMode[] = [];
-    selectedSpeedTestId: number = 2;
+    selectedTest: TypingTestMode;
+    wordLoadIndex = 0;
     words: string[] = [];
     lines: any[] = [];
     currentWordIndex = 0;
@@ -26,6 +28,7 @@ export class SpeedTestService {
     }
 
     reset(): void {
+        this.wordLoadIndex = 0;
         this.currentWordIndex = 0;
         this.words = [];
         this.lines = [];
@@ -35,8 +38,16 @@ export class SpeedTestService {
         this.loadWords();
     }
 
+    isLastWord(): boolean {
+        return this.selectedTest.wordMode === WordMode.Standard && this.lines[0].length - 1 ===  this.currentWordIndex && this.lines[1].length === 0;
+    }
+
     wordTyped(word: string): void {
-        if (word.length === 0) return;
+        if (!word) return;
+        if (this.isLastWord()) {
+            // TODO: timer needs to support counting up instead of just down in order to implement this feature
+            // end the test here
+        }
         const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word);
         this.typingStats.numLettersTyped += word.length;
         this.typingStats.numIncorrectLetters += incorrectLetters;
@@ -68,30 +79,13 @@ export class SpeedTestService {
         this.typingStats.avgAccuracy = 100 - ((this.typingStats.numIncorrectLetters / this.typingStats.numExpectedLetters) * 100);
     }
 
-    getNextWord(): string {
-        return this.words[this.getRandomNumber(0, this.words.length - 1)];
-    }
-
-    getRandomWordLine(): string[] {
-        let wordLength = 0;
-        const words: string[] = [];
-
-        while (wordLength < 35) {
-            const word = this.getNextWord();
-            words.push(word);
-            wordLength += word.length;
-        }
-
-        return words;
-    }
-
     onLineCompleted(): void {
         this.lines.splice(0, 1);
-        this.lines.push(this.getRandomWordLine());
+        this.lines.push(this.getWordLine());
     }
 
     loadTest(testId: number): void {
-        this.selectedSpeedTestId = testId;
+        this.selectedTest = this.typingTests.find(x => x.id === testId);
         this.reset();
     }
 
@@ -104,6 +98,34 @@ export class SpeedTestService {
         }
 
         return incorrectCount;
+    }
+
+    private getWordLine(): string[] {
+        let wordLength = 0;
+        const words: string[] = [];
+
+        while (wordLength < 35) {
+            const word = this.getNextWord();
+            if (!word) break;
+            words.push(word);
+            wordLength += word.length;
+        }
+
+        return words;
+    }
+
+    private getNextWord(previewOnly?: boolean): string {
+        let word = undefined;
+        if (this.selectedTest.wordMode === WordMode.Standard) {
+            if (this.words.length > this.wordLoadIndex) {
+                word = this.words[this.wordLoadIndex];
+                if (!previewOnly) this.wordLoadIndex++;
+            }
+        } else {
+            word = this.words[this.getRandomNumber(0, this.words.length - 1)];
+        }
+
+        return word;
     }
 
     private loadTypingTests(): void {
@@ -123,11 +145,8 @@ export class SpeedTestService {
     }
 
     private loadWords(): void {
-        const currentTypingTest = this.typingTests.find(x => x.id === this.selectedSpeedTestId);
-        const textFileName = currentTypingTest.textFileName;
-        this.timer.reset(currentTypingTest.timeLimit);
-
-        this._wordListApiService.getWordList(textFileName)
+        this.timer.reset(this.selectedTest.timeLimit);
+        this._wordListApiService.getWordList(this.selectedTest.textFileName, this.selectedTest.wordMode)
             .subscribe((data: any) => {
                 this.words = data;
                 this.onWordsLoaded();
@@ -139,7 +158,7 @@ export class SpeedTestService {
 
     private onWordsLoaded(): void {
         for (let i = 0; i < 3; i++) {
-            this.lines.push(this.getRandomWordLine());
+            this.lines.push(this.getWordLine());
         }
     }
 }

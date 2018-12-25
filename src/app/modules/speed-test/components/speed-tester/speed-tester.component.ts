@@ -12,6 +12,7 @@ export class SpeedTesterComponent implements OnInit {
     constructor(private _speedTestService: SpeedTestService) { }
 
     ngOnInit(): void {
-        this._speedTestService.reset();
+        // TODO: load default test from api?
+        this._speedTestService.loadTest(2);
     }
 }
