@@ -19,7 +19,7 @@ export class SpeedTestService {
     currentWordIndex = 0;
     currentTypedVal = '';
     typingStats: TypingStats = new TypingStats();
-    timer: Timer = new Timer(60, 1000);
+    timer: Timer = new Timer(60);
 
     constructor(private _wordLoader: WordLoaderService,
                 private _wordListApiService: WordListApiService,
