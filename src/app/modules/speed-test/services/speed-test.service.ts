@@ -10,7 +10,7 @@ import { WordMode } from '../../core/enums/word-mode.enum';
 
 @Injectable()
 export class SpeedTestService {
-    private _subscriptions = new Subject<void>();
+    private _timer: Timer = new Timer(60);
     typingTests: TypingTestMode[] = [];
     selectedTest: TypingTestMode;
     wordLoadIndex = 0;
@@ -19,22 +19,27 @@ export class SpeedTestService {
     currentWordIndex = 0;
     currentTypedVal = '';
     typingStats: TypingStats = new TypingStats();
-    timer: Timer = new Timer(60);
+    isTestComplete: boolean = false;
+    get currentTime(): number { return this._timer.counter; }
+    get isTestRunning(): boolean { return this._timer.isRunning; }
 
     constructor(private _wordLoader: WordLoaderService,
                 private _wordListApiService: WordListApiService,
                 private _typingTestApiService: TypingTestApiService) {
         this.loadTypingTests();
+        this._timer.tick.subscribe(_ => this.onTimerTick());
+        this._timer.complete.subscribe(_ => this.onTestComplete());
     }
 
     reset(): void {
+        this.isTestComplete = false;
         this.wordLoadIndex = 0;
         this.currentWordIndex = 0;
         this.words = [];
         this.lines = [];
         this.currentTypedVal = '';
         this.typingStats = new TypingStats();
-        this.timer.reset();
+        this._timer.reset();
         this.loadWords();
     }
 
@@ -44,10 +49,8 @@ export class SpeedTestService {
 
     wordTyped(word: string): void {
         if (!word) return;
-        if (this.isLastWord()) {
-            // TODO: timer needs to support counting up instead of just down in order to implement this feature
-            // end the test here
-        }
+        if (this.isLastWord()) { this.onTestComplete(); }
+
         const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word);
         this.typingStats.numLettersTyped += word.length;
         this.typingStats.numIncorrectLetters += incorrectLetters;
@@ -64,9 +67,8 @@ export class SpeedTestService {
     }
 
     letterTyped(currentVal: string): void {
-        if (!this.timer.isTimerRunning() && !this.timer.isComplete) { this.timer.start(); }
+        if (!this._timer.isRunning && !this._timer.isComplete && !this.isTestComplete) { this._timer.start(); }
         this.currentTypedVal = currentVal;
-        this.updateStats();
     }
 
     getCurrentWord(): string {
@@ -74,7 +76,7 @@ export class SpeedTestService {
     }
 
     updateStats(): void {
-        const minElapsed = (this.timer.duration - this.timer.counter) / 60;
+        const minElapsed = (this._timer.duration - this._timer.counter) / 60;
         this.typingStats.avgWpm = ((this.typingStats.numLettersTyped / 4.7) - this.typingStats.incorrectWordCount) / minElapsed;
         this.typingStats.avgAccuracy = 100 - ((this.typingStats.numIncorrectLetters / this.typingStats.numExpectedLetters) * 100);
     }
@@ -145,7 +147,7 @@ export class SpeedTestService {
     }
 
     private loadWords(): void {
-        this.timer.reset(this.selectedTest.timeLimit);
+        this._timer.reset(this.selectedTest.timeLimit);
         this._wordListApiService.getWordList(this.selectedTest.textFileName, this.selectedTest.wordMode)
             .subscribe((data: any) => {
                 this.words = data;
@@ -160,5 +162,15 @@ export class SpeedTestService {
         for (let i = 0; i < 3; i++) {
             this.lines.push(this.getWordLine());
         }
+    }
+
+    private onTimerTick(): void {
+        this.updateStats();
+    }
+
+    private onTestComplete(): void {
+        this._timer.stop();
+        this.updateStats();
+        this.isTestComplete = true;
     }
 }

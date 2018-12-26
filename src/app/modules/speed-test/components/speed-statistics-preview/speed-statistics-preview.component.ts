@@ -9,7 +9,7 @@ import { TypingStats } from '../../models/typing-stats';
 })
 export class SpeedStatisticsPreviewComponent {
     get typingStats(): TypingStats { return this._speedTestService.typingStats; }
-    get time(): number { return this._speedTestService.timer.counter; }
+    get time(): number { return this._speedTestService.currentTime; }
 
     constructor(private _speedTestService: SpeedTestService) { }
 }

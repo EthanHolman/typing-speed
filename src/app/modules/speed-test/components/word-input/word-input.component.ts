@@ -8,12 +8,12 @@ import { SpeedTestService } from '../../services/speed-test.service';
 })
 export class WordInputComponent {
     currentVal: string = '';
-    get isTimerRunning(): boolean { return this._speedTestService.timer.isTimerRunning(); }
+    get timerRunning(): boolean { return this._speedTestService.isTestRunning; }
 
     constructor(private _speedTestService: SpeedTestService) { }
 
     placeholder(): string {
-        return (this.isTimerRunning) ? '' : 'Begin Typing...';
+        return (this.timerRunning) ? '' : 'Begin Typing...';
     }
 
     onType(): void {

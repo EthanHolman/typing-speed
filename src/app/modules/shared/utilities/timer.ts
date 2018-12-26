@@ -17,6 +17,7 @@ export class Timer {
     get counter(): number { return this._counter; }
     get duration(): number { return this._duration; }
     get isComplete(): boolean { return this._isComplete; }
+    get isRunning(): boolean { return (!!this._subscription); }
 
     constructor(duration: number) {
         this._timer = interval(1000);
@@ -36,10 +37,6 @@ export class Timer {
             }
         }
         this._counter = this._duration;
-    }
-
-    isTimerRunning(): boolean {
-        return (!!this._subscription);
     }
 
     start(): void {
