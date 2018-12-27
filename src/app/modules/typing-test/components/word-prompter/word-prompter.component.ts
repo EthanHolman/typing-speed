@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SpeedTestService } from '../../services/speed-test.service';
+import { TypingTestService } from '../../services/typing-test.service';
 
 @Component({
     selector: 'app-word-prompter',
@@ -7,18 +7,18 @@ import { SpeedTestService } from '../../services/speed-test.service';
     styleUrls: ['word-prompter.component.scss']
 })
 export class WordPrompterComponent {
-    get lines(): any[] { return this._speedTestService.lines; }
-    get currentWord(): string { return this._speedTestService.getCurrentWord(); }
+    get lines(): any[] { return this._typingTestService.lines; }
+    get currentWord(): string { return this._typingTestService.getCurrentWord(); }
 
-    constructor(private _speedTestService: SpeedTestService) { }
+    constructor(private _typingTestService: TypingTestService) { }
 
     getWordClass(lineIndex, wordIndex): string {
-        const currentWord = lineIndex === 0 && wordIndex === this._speedTestService.currentWordIndex;
+        const currentWord = lineIndex === 0 && wordIndex === this._typingTestService.currentWordIndex;
         if (!currentWord) return '';
 
         let curWordInvalid = false;
-        const curWord = this._speedTestService.getCurrentWord();
-        const curVal = this._speedTestService.currentTypedVal;
+        const curWord = this._typingTestService.getCurrentWord();
+        const curVal = this._typingTestService.currentTypedVal;
         for (let i = 0; i < curVal.length; i++) {
             if (curVal.charAt(i) !== curWord.charAt(i)) { curWordInvalid = true; }
         }
@@ -27,8 +27,8 @@ export class WordPrompterComponent {
     }
 
     currentWordError(): boolean {
-        const curWord = this._speedTestService.getCurrentWord();
-        const curVal = this._speedTestService.currentTypedVal;
+        const curWord = this._typingTestService.getCurrentWord();
+        const curVal = this._typingTestService.currentTypedVal;
         for (let i = 0; i < curVal.length; i++) {
             if (curVal.charAt(i) !== curWord.charAt(i)) { return true; }
         }

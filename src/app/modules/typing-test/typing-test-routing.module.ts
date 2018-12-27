@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SpeedTestPageComponent } from './components/speed-test-page/speed-test-page.component';
+import { TypingTestPageComponent } from './components/typing-test-page/typing-test-page.component';
 
 const routes: Routes = [
     {
-        path: 'speedtest',
-        component: SpeedTestPageComponent
+        path: 'typing-test',
+        component: TypingTestPageComponent
     }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class SpeedTestRoutingModule { }
+export class TypingTestRoutingModule { }
