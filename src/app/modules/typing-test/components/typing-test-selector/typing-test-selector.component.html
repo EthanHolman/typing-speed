@@ -1,5 +1,5 @@
 <div class='test-list-container'>
-    <div *ngFor='let test of tests' (click)='changeTest(test.id)' [class.selected]='selectedSpeedTest === test' class='test-item'>
+    <div *ngFor='let test of tests' (click)='changeTest(test.id)' [class.selected]='selectedTypingTest === test' class='test-item'>
         <h3>{{ test.name }}</h3>
         <div class='test-description'>{{ test.description }}</div>
     </div>

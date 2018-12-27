@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SpeedTestModule } from './modules/speed-test/speed-test.module';
 import { CoreModule } from './modules/core/core.module';
+import { TypingTestModule } from './modules/typing-test/typing-test.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { CoreModule } from './modules/core/core.module';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    SpeedTestModule
+    TypingTestModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,11 +5,10 @@ import { TypingTestApiService } from '../../core/services/typing-test-api.servic
 import { TypingTestMode } from '../../core/models/typing-test-mode';
 import { TypingStats } from '../models/typing-stats';
 import { Timer } from '../../shared/utilities/timer';
-import { Subject } from 'rxjs';
 import { WordMode } from '../../core/enums/word-mode.enum';
 
 @Injectable()
-export class SpeedTestService {
+export class TypingTestService {
     private _timer: Timer = new Timer(60);
     typingTests: TypingTestMode[] = [];
     selectedTest: TypingTestMode;
