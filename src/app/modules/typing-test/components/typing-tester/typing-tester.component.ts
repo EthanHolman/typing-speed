@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { TypingTestService } from '../../services/typing-test.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
-    selector: 'app-typing-tester',
     templateUrl: './typing-tester.component.html',
     styleUrls: ['./typing-tester.component.scss']
 })
 export class TypingTesterComponent implements OnInit {
     get testComplete(): boolean { return this._typingTestService.isTestComplete; }
 
-    constructor(private _typingTestService: TypingTestService) { }
+    constructor(private _activatedRoute: ActivatedRoute,
+                private _typingTestService: TypingTestService) { }
 
     ngOnInit(): void {
-        // TODO: load default test from api?
-        this._typingTestService.loadTest(2);
+        // TODO: this should use switchMap like in ng documentation
+        this._activatedRoute.params.subscribe((params: Params) => {
+            this._typingTestService.loadTest(parseInt(params.id));
+        });
     }
 }

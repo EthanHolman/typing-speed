@@ -9,6 +9,7 @@ import { WordInputComponent } from './components/word-input/word-input.component
 import { TypingStatisticsPreviewComponent } from './components/typing-statistics-preview/typing-statistics-preview.component';
 import { TypingTestSelectorComponent } from './components/typing-test-selector/typing-test-selector.component';
 import { TypingTestService } from './services/typing-test.service';
+import { TypingTestDefaultComponent } from './components/typing-test-default/typing-test-default.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { TypingTestService } from './services/typing-test.service';
         WordPrompterComponent,
         WordInputComponent,
         TypingStatisticsPreviewComponent,
-        TypingTestSelectorComponent
+        TypingTestSelectorComponent,
+        TypingTestDefaultComponent
     ],
     providers: [
         TypingTestService,
