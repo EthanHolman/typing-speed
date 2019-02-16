@@ -51,9 +51,8 @@ export class TypingTestService {
         if (this.isLastWord()) { this.onTestComplete(); }
 
         const incorrectLetters = this.calcIncorrectLetters(this.getCurrentWord(), word);
-        this.typingStats.numLettersTyped += word.length;
+        this.typingStats.numLettersTyped += word.length + 1;
         this.typingStats.numIncorrectLetters += incorrectLetters;
-        this.typingStats.numExpectedLetters += this.getCurrentWord().length;
         if (incorrectLetters > 0) { this.typingStats.incorrectWordCount++; }
         this.typingStats.wordsTyped++;
 
@@ -76,8 +75,8 @@ export class TypingTestService {
 
     updateStats(): void {
         const minElapsed = (this._timer.duration - this._timer.counter) / 60;
-        this.typingStats.avgWpm = ((this.typingStats.numLettersTyped / 4.7) - this.typingStats.incorrectWordCount) / minElapsed;
-        this.typingStats.avgAccuracy = 100 - ((this.typingStats.numIncorrectLetters / this.typingStats.numExpectedLetters) * 100);
+        this.typingStats.avgWpm = ((this.typingStats.numLettersTyped / 5) - this.typingStats.incorrectWordCount) / minElapsed;
+        this.typingStats.avgAccuracy = 100 - (((this.typingStats.numLettersTyped - this.typingStats.numIncorrectLetters) / this.typingStats.numLettersTyped) * 100);
     }
 
     onLineCompleted(): void {
